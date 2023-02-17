@@ -4,11 +4,19 @@ import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Stack, IconButton, InputAdornment, Alert, MenuItem, Link, Typography } from '@mui/material';
+import {
+  Stack,
+  IconButton,
+  InputAdornment,
+  Alert,
+  MenuItem,
+  Link,
+  Typography,
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // auth
 import { useAuthContext } from '../../auth/useAuthContext';
-import countryList from 'react-select-country-list'
+import countryList from 'react-select-country-list';
 
 // components
 import Iconify from '../../components/iconify';
@@ -18,20 +26,18 @@ import { PATH_AUTH } from '../../routes/paths';
 
 export default function AuthRegisterForm() {
   const { register } = useAuthContext();
-  let countryName = 'India'
+  let countryName = 'India';
   const [showPassword, setShowPassword] = useState(false);
 
-
-  const countryArray = countryList().getData().map((country, index) => {
+  const countryArray = countryList()
+    .getData()
+    .map((country, index) => {
       return (
-        <MenuItem
-          value={country.label}
-          key={index}
-        >
+        <MenuItem value={country.label} key={index}>
           {country.label}
         </MenuItem>
       );
-    })
+    });
   const RegisterSchema = Yup.object().shape({
     first_name: Yup.string().required('First name required'),
     last_name: Yup.string().required('Last name required'),
@@ -41,7 +47,9 @@ export default function AuthRegisterForm() {
     password: Yup.string().required('Password is required'),
     data_agreement: Yup.string().oneOf(['true']).required('Please accept data agreement'),
     tnc: Yup.string().oneOf(['true']).required('Please accept t&c'),
-    confirmPassword: Yup.string().required('Password is required').oneOf([Yup.ref("password")], "Passwords do not match"),
+    confirmPassword: Yup.string()
+      .required('Password is required')
+      .oneOf([Yup.ref('password')], 'Passwords do not match'),
     referral_code: Yup.string(),
   });
 
@@ -54,22 +62,24 @@ export default function AuthRegisterForm() {
     dob: '',
     nationality: '',
     referral_code: '',
-    tnc : '',
-    data_agreement:''
+    tnc: '',
+    data_agreement: '',
   };
   //I agree to the terms of the Crypto.com Privacy Notice and Crypto.com Exchange Terms & conditions.
 
-  const tncComp = (<div>
-    {'I agree to the terms of the '}
-    <Link underline="always" color="text.secondary">
-      Crypto.com Privacy Notice
-    </Link>
-    {' and '}
-    <Link underline="always" color="text.secondary">
-      Crypto.com Exchange Terms & conditions
-    </Link>
-    .
-  </div>);
+  const tncComp = (
+    <div>
+      {'I agree to the terms of the '}
+      <Link underline="always" color="text.secondary">
+        Crypto.com Privacy Notice
+      </Link>
+      {' and '}
+      <Link underline="always" color="text.secondary">
+        Crypto.com Exchange Terms & conditions
+      </Link>
+      .
+    </div>
+  );
 
   const methods = useForm({
     resolver: yupResolver(RegisterSchema),
@@ -84,7 +94,7 @@ export default function AuthRegisterForm() {
   } = methods;
 
   const onSubmit = async (data) => {
-    console.log("ON SUBMIT",data);
+    console.log('ON SUBMIT', data);
     try {
       if (register) {
         await register(
@@ -94,7 +104,7 @@ export default function AuthRegisterForm() {
           data.last_name,
           data.dob,
           data.nationality,
-          data.referral_code,
+          data.referral_code
         );
         window.location.href = PATH_AUTH.verify;
       }
@@ -103,7 +113,7 @@ export default function AuthRegisterForm() {
       reset();
       setError('afterSubmit', {
         ...error,
-        message: error.message || error,
+        message: error.error || error,
       });
     }
   };
@@ -111,38 +121,29 @@ export default function AuthRegisterForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2.5}>
-        {!!errors.afterSubmit && <Alert severity='error'>{errors.afterSubmit.message}</Alert>}
+        {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <RHFTextField name='first_name' label='First name' />
-          <RHFTextField name='last_name' label='Last name' />
+          <RHFTextField name="first_name" label="First name" />
+          <RHFTextField name="last_name" label="Last name" />
         </Stack>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <RHFTextField
-            name='dob'
-            label='Date Of Birth'
-            type='date'
-          />
-          <RHFSelect
-            name='nationality'
-            label='Nationality'
-            children={countryArray}
-          />
-
+          <RHFTextField name="dob" label="Date Of Birth" type="date" />
+          <RHFSelect name="nationality" label="Nationality" children={countryArray} />
         </Stack>
 
-        <RHFTextField name='email' label='Email address' />
+        <RHFTextField name="email" label="Email address" />
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
           <RHFTextField
-            name='password'
-            label='Password'
+            name="password"
+            label="Password"
             type={showPassword ? 'text' : 'password'}
             InputProps={{
               endAdornment: (
-                <InputAdornment position='end'>
-                  <IconButton onClick={() => setShowPassword(!showPassword)} edge='end'>
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
                     <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                   </IconButton>
                 </InputAdornment>
@@ -150,27 +151,22 @@ export default function AuthRegisterForm() {
             }}
           />
           <RHFTextField
-            name='confirmPassword'
-            label='Confirm Password'
+            name="confirmPassword"
+            label="Confirm Password"
             type={showPassword ? 'text' : 'password'}
             InputProps={{
               endAdornment: (
-                <InputAdornment position='end'>
-                  <IconButton onClick={() => setShowPassword(!showPassword)} edge='end'>
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
                     <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                   </IconButton>
                 </InputAdornment>
               ),
             }}
           />
-
         </Stack>
 
-        <RHFTextField
-          name='referral_code'
-          label='Referral Code'
-          type='text'
-        />
+        <RHFTextField name="referral_code" label="Referral Code" type="text" />
 
         <RHFCheckbox
           name="tnc"
@@ -184,10 +180,10 @@ export default function AuthRegisterForm() {
 
         <LoadingButton
           fullWidth
-          color='inherit'
-          size='large'
-          type='submit'
-          variant='contained'
+          color="inherit"
+          size="large"
+          type="submit"
+          variant="contained"
           loading={isSubmitting || isSubmitSuccessful}
           sx={{
             bgcolor: 'text.primary',

@@ -63,7 +63,7 @@ export default function AuthVerifyCodeForm() {
       enqueueSnackbar('Verify success!');
       navigate(PATH_DASHBOARD.root);
     } catch (error) {
-      console.error(error);
+      console.error(error.error);
     }
   };
 

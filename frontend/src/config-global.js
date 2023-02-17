@@ -6,6 +6,8 @@ import { PATH_DASHBOARD } from './routes/paths';
 
 export const HOST_API_KEY = process.env.REACT_APP_HOST_API_KEY || 'http://localhost:5000';
 
+// export const HOST_API_KEY = 'https://tg-mern-backend.onrender.com';
+
 export const FIREBASE_API = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,

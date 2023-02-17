@@ -53,7 +53,7 @@ export default function AuthLoginForm() {
       reset();
       setError('afterSubmit', {
         ...error,
-        message: error.message || error,
+        message: error.error || error,
       });
     }
   };
